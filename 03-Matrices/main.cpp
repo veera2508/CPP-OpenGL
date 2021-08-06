@@ -1,7 +1,3 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2013)
-and may not be redistributed without written permission.*/
-//Version: 001
-
 #include "LUtil.h"
 
 void runMainLoop( int val );
@@ -34,6 +30,8 @@ int main( int argc, char* args[] )
 		return 1;
 	}
 
+	//Set keyboard handler
+	glutKeyboardFunc(handleKeys);
 	//Set rendering function
 	glutDisplayFunc( render );
 
