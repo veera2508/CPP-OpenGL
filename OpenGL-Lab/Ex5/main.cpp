@@ -36,16 +36,6 @@ int main( int argc, char* args[] )
 		shape.push_back(p);
 	}
 
-	cout<<"\nTransform:\n";
-	cout<<"1.Translation\n2.Rotation about origin\n3.Rotation about (x, y)\n";
-	cout<<"4.Uniform Scaling wrt Origin\n5.Differential Scaling wrt origin\n6.Scaling wrt (x, y)\n";
-	cout<<"7.Reflection about X Axis\n8.Reflection about Y Axis\n9.Reflection about origin\n10.Reflection about (x=y)\n";
-	cout<<"11.X-Direction Sheer\n12.Y-Direction Sheer\n";
-	cout<<"Enter the choice: ";
-	int choice;
-	cin>>choice;
-	globt = (transform_choice)choice;
-
 
 	//Set rendering function
 	glutDisplayFunc( render );

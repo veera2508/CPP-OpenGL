@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "lopengl.h": "c",
-        "vector": "c"
+        "vector": "c",
+        "iostream": "cpp"
     }
 }
