@@ -138,7 +138,7 @@ vector<vector<double>> Rotate_Point()
     return transmat;
 }
 
-vector<vector<double>> Uniform_Scale(int sf = 0) 
+vector<vector<double>> Uniform_Scale(double sf = 0) 
 {
     if (sf == 0)
     {
@@ -151,7 +151,7 @@ vector<vector<double>> Uniform_Scale(int sf = 0)
     return transmat;
 }
 
-vector<vector<double>> Differential_Scale(int sfx = 0, int sfy =0)
+vector<vector<double>> Differential_Scale(double sfx = 0, double sfy =0)
 {
     if (sfx == 0 && sfy == 0) 
     {
@@ -170,7 +170,7 @@ vector<vector<double>> Uniform_Scale_Point()
     int xc, yc;
     cout<<"Enter the reference points x, y: ";
     cin>>xc>>yc;
-    int sf;
+    double sf;
     cout<<"Enter scale factor: ";
     cin>>sf;
     vector<vector<double>> transmat(3, vector<double>(3, 0));
@@ -184,7 +184,7 @@ vector<vector<double>> Differential_Scale_Point()
     int xc, yc;
     cout<<"Enter the reference points x, y: ";
     cin>>xc>>yc;
-    int sfx, sfy;
+    double sfx, sfy;
     cout<<"Enter scale factors sfx, sfy: ";
     cin>>sfx>>sfy;
     vector<vector<double>> transmat(3, vector<double>(3, 0));
@@ -229,7 +229,7 @@ vector<vector<double>> Reflection_XY()
     return transmat;
 }
 
-vector<vector<double>> Shear_X(int sf = 0) 
+vector<vector<double>> Shear_X(double sf = 0) 
 {
     if (sf == 0)
     {
@@ -242,7 +242,7 @@ vector<vector<double>> Shear_X(int sf = 0)
     return transmat;
 }
 
-vector<vector<double>> Shear_Y(int sf = 0) 
+vector<vector<double>> Shear_Y(double sf = 0) 
 {
     if (sf == 0)
     {
@@ -255,7 +255,7 @@ vector<vector<double>> Shear_Y(int sf = 0)
     return transmat;
 }
 
-vector<vector<double>> Shear_X_Point(int sf = 0) 
+vector<vector<double>> Shear_X_Point(double sf = 0) 
 {
     if (sf == 0)
     {
@@ -272,7 +272,7 @@ vector<vector<double>> Shear_X_Point(int sf = 0)
     return transmat;
 }
 
-vector<vector<double>> Shear_Y_Point(int sf = 0) 
+vector<vector<double>> Shear_Y_Point(double sf = 0) 
 {
     if (sf == 0)
     {
