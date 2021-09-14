@@ -170,17 +170,42 @@ vector<vector<double>> Rotate_X(int theta = 0)
     vector<vector<double>> transmat(4, vector<double>(4, 0));
     double cosx = cos(DToR(theta));
     double sinx = sin(DToR(theta));
-    cout<<cosx<<sinx<<endl;
     transmat[0][0] = transmat[3][3] = 1;
     transmat[1][1] = transmat[2][2] = cosx;
     transmat[1][2] = -sinx;
     transmat[2][1] = sinx;
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-            cout<<transmat[i][j]<<" ";
-        cout<<endl;
+    return transmat;
+}
+
+vector<vector<double>> Rotate_Z(int theta = 0)
+{
+    if (theta == 0) {
+        cout<<"Enter anticlockwise rotation angle: ";
+        cin>>theta;
     }
+    vector<vector<double>> transmat(4, vector<double>(4, 0));
+    double cosx = cos(DToR(theta));
+    double sinx = sin(DToR(theta));
+    transmat[2][2] = transmat[3][3] = 1;
+    transmat[0][0] = transmat[1][1] = cosx;
+    transmat[0][1] = -sinx;
+    transmat[1][0] = sinx;
+    return transmat;
+}
+
+vector<vector<double>> Rotate_Y(int theta = 0)
+{
+    if (theta == 0) {
+        cout<<"Enter anticlockwise rotation angle: ";
+        cin>>theta;
+    }
+    vector<vector<double>> transmat(4, vector<double>(4, 0));
+    double cosx = cos(DToR(theta));
+    double sinx = sin(DToR(theta));
+    transmat[1][1] = transmat[3][3] = 1;
+    transmat[0][0] = transmat[2][2] = cosx;
+    transmat[0][2] = sinx;
+    transmat[2][0] = sinx;
     return transmat;
 }
 
@@ -195,6 +220,43 @@ vector<vector<double>> translation(int dx = 0, int dy = 0, int dz = 0)
     transmat[0][3] = dx;
     transmat[1][3] = dy;
     transmat[2][3] = dz;
+    return transmat;
+}
+
+vector<vector<double>> Differential_Scale(double sfx = 0, double sfy =0, double sfz = 0)
+{
+    if (sfx == 0 && sfy == 0 && sfz == 0) 
+    {
+        cout<<"Enter scale factors sfx, sfy, sfz: \n";
+        cin>>sfx;
+        cin>>sfy;
+        cin>>sfz;
+    }
+    vector<vector<double>> transmat(4, vector<double>(4, 0));
+    transmat[0][0] = sfx;
+    transmat[1][1] = sfy;
+    transmat[2][2] = sfz;
+    transmat[3][3] = 1;
+
+    return transmat;
+}
+
+vector<vector<double>> Shear(double sf = 0) 
+{
+    if (sf == 0)
+    {
+        cout<<"Enter sheer factor: ";
+        cin>>sf;
+    }
+    cout<<"Enter zref: ";
+    int zref;
+    cin>>zref;
+    vector<vector<double>> transmat(4, vector<double>(4, 0));
+    transmat[0][0] = transmat[1][1] = transmat[2][2] = transmat[3][3] = 1;
+    transmat[0][2] = sf;
+    transmat[1][2] = sf;
+    transmat[0][3] = -sf * zref;
+    transmat[1][3] = -sf * zref;
     return transmat;
 }
 
@@ -213,7 +275,7 @@ void render()
     double side = 10;
 
     vector<double> red = {1.0f, 0.f, 0.f};
-    vector<double> blue = {0.0f, 1.f, 0.f};
+    vector<double> blue = {0.0f, 0.5f, 0.f};
     vector<double> green = {0.0f, 0.f, 1.f};
     vector<double> yellow = {1.0f, 0.f, 1.f};
     vector<double> purple = {1.0f, 1.f, 0.f};
@@ -233,7 +295,7 @@ void render()
     int ch;
     vector<vector<double>> transmat;
     cout<<"3D Transform:\n";
-    cout<<"1.Translation\n2.Rotation about X axis\n3.Rotation about Y axis\n4.Rotation about Z axis\n";
+    cout<<"1.Translation\n2.Rotation about X axis\n3.Rotation about Y axis\n4.Rotation about Z axis\n5.Scaling\n6.Reflection about xy\n7.Reflection about yz\n8.Reflection about zx\n9.Shear along z with zref\n";
     cout<<"Enter the choice: ";
     cin>>ch;
     switch(ch)
@@ -243,6 +305,27 @@ void render()
             break;
         case 2:
             transmat = Rotate_X();
+            break;
+        case 3:
+            transmat = Rotate_Y();
+            break;
+        case 4:
+            transmat = Rotate_Z();
+            break;
+        case 5:
+            transmat = Differential_Scale();
+            break;
+        case 6:
+            transmat = Rotate_X(180);
+            break;
+        case 7:
+            transmat = Rotate_Y(180);
+            break;
+        case 8:
+            transmat = Rotate_Z(180);
+            break;
+        case 9:
+            transmat = Shear();
             break;
 
     }
