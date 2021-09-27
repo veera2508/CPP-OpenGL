@@ -86,7 +86,7 @@ public:
 		this->color = color;
 	}
 
-	void render(string mode = "filled")
+	void render(bool print, string mode = "filled")
 	{
 		glColor3f(color[0], color[1], color[2]);
 		if (mode == "filled")
@@ -94,8 +94,14 @@ public:
 		else
 			glBegin(GL_LINE_LOOP);
 		
-		for (Point p: vert) p.render();
+		for (Point p: vert) 
+        {
+            p.render();
+            if (print)
+                cout<<p.x<<" "<<p.y<<"\t";
+        }
 		glEnd();
+        cout<<endl;
 	}
 
 	Square transform(vector<vector<double>> transmat) 
@@ -118,9 +124,11 @@ class Cube
 public:
 	//Front->Back->Top->Bottom->Left->Right
 	vector<Square> sides;
-	void render()
+	void render(bool print)
 	{
-		for (auto side: sides) side.render("loop");
+		cout<<"Coordinates of vertices: \n";
+        for (auto side: sides) side.render(true, "loop");
+        cout<<"\n";
 	}
 
 	Cube transform(vector<vector<double>> transmat)
@@ -131,8 +139,16 @@ public:
 	}
 };
 
-
 Cube c1;
+double side = 10;
+
+vector<double> red = {1.0f, 0.f, 0.f};
+vector<double> blue = {0.0f, 0.5f, 0.f};
+vector<double> green = {0.0f, 0.f, 1.f};
+vector<double> yellow = {1.0f, 0.f, 1.f};
+vector<double> purple = {1.0f, 1.f, 0.f};
+vector<double> cyan = {0.0f, 1.f, 1.f};
+
 
 bool initGL()
 {
@@ -157,6 +173,14 @@ bool initGL()
         printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
         return false;
     }
+
+    //Front->Back->Top->Bottom->Right->Left
+    c1.sides.push_back(Square(Point(-side/2, -side/2, side/2), Point(side/2, -side/2, side/2), Point(side/2, side/2, side/2), Point(-side/2, side/2, side/2), red));
+    c1.sides.push_back(Square(Point(-side/2, -side/2, -side/2), Point(side/2, -side/2, -side/2), Point(side/2, side/2, -side/2), Point(-side/2, side/2, -side/2), blue));
+    c1.sides.push_back(Square(Point(-side/2, side/2, -side/2), Point(side/2, side/2, -side/2), Point(side/2, side/2, side/2), Point(-side/2, side/2, side/2), green));
+    c1.sides.push_back(Square(Point(-side/2, -side/2, -side/2), Point(side/2, -side/2, -side/2), Point(side/2, -side/2, side/2), Point(-side/2, -side/2, side/2), yellow));
+    c1.sides.push_back(Square(Point(side/2, -side/2, -side/2), Point(side/2, -side/2, side/2), Point(side/2, side/2, side/2), Point(side/2, side/2, -side/2), purple));
+    c1.sides.push_back(Square(Point(-side/2, -side/2, -side/2), Point(-side/2, -side/2, side/2), Point(-side/2, side/2, side/2), Point(-side/2, side/2, -side/2), cyan));
 
     return true;
 }
@@ -263,35 +287,39 @@ vector<vector<double>> Shear(double sf = 0)
 void update() {
 }
 
+bool first = true;
+
+
 void render()
 {
     
     //Clear color buffer
     glClearColor( 0.f, 0.f, 0.f, 1.f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glLoadIdentity();
 
-    double side = 10;
-
-    vector<double> red = {1.0f, 0.f, 0.f};
-    vector<double> blue = {0.0f, 0.5f, 0.f};
-    vector<double> green = {0.0f, 0.f, 1.f};
-    vector<double> yellow = {1.0f, 0.f, 1.f};
-    vector<double> purple = {1.0f, 1.f, 0.f};
-    vector<double> cyan = {0.0f, 1.f, 1.f};
-
-    //Front->Back->Top->Bottom->Right->Left
-    c1.sides.push_back(Square(Point(-side/2, -side/2, side/2), Point(side/2, -side/2, side/2), Point(side/2, side/2, side/2), Point(-side/2, side/2, side/2), red));
-    c1.sides.push_back(Square(Point(-side/2, -side/2, -side/2), Point(side/2, -side/2, -side/2), Point(side/2, side/2, -side/2), Point(-side/2, side/2, -side/2), blue));
-    c1.sides.push_back(Square(Point(-side/2, side/2, -side/2), Point(side/2, side/2, -side/2), Point(side/2, side/2, side/2), Point(-side/2, side/2, side/2), green));
-    c1.sides.push_back(Square(Point(-side/2, -side/2, -side/2), Point(side/2, -side/2, -side/2), Point(side/2, -side/2, side/2), Point(-side/2, -side/2, side/2), yellow));
-    c1.sides.push_back(Square(Point(side/2, -side/2, -side/2), Point(side/2, -side/2, side/2), Point(side/2, side/2, side/2), Point(side/2, side/2, -side/2), purple));
-    c1.sides.push_back(Square(Point(-side/2, -side/2, -side/2), Point(-side/2, -side/2, side/2), Point(-side/2, side/2, side/2), Point(-side/2, side/2, -side/2), cyan));
 
     glTranslatef(0, 0, -30);
 
-    Cube c2;
+
+    if (first)
+    {
+        c1.render(true);
+        first = false;
+        glColor3f(1.f, 1.f, 1.f);
+        glBegin(GL_LINES);
+        glVertex2f(0, -SCREEN_HEIGHT/2);
+        glVertex2f(0, SCREEN_HEIGHT/2);
+        glEnd();
+
+        glBegin(GL_LINES);
+        glVertex2f(-SCREEN_WIDTH/2, 0);
+        glVertex2f(SCREEN_WIDTH/2, 0);
+        glEnd();
+        glutSwapBuffers();
+        return;
+    }
+
     int ch;
     vector<vector<double>> transmat;
     cout<<"3D Transform:\n";
@@ -329,8 +357,19 @@ void render()
             break;
 
     }
-    c2 = c1.transform(transmat);
-    c2.render();
+    c1 = c1.transform(transmat);
+    c1.render(true);
+
+    glColor3f(1.f, 1.f, 1.f);
+    glBegin(GL_LINES);
+    glVertex2f(0, -SCREEN_HEIGHT/2);
+    glVertex2f(0, SCREEN_HEIGHT/2);
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex2f(-SCREEN_WIDTH/2, 0);
+    glVertex2f(SCREEN_WIDTH/2, 0);
+    glEnd();
 
     glutSwapBuffers();
 }
